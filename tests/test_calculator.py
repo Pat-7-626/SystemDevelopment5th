@@ -5,14 +5,21 @@ Test suite for the Calculator class.
 import pytest
 from calculator.calculator import Calculator, InvalidInputException
 
+MAX_VALUE = 1000000
+MIN_VALUE = -1000000
+
+@pytest.fixture
+def calc():
+    """Fixture to create a Calculator instance."""
+    return Calculator()
+
 
 class TestAddition:
     """Tests for the add method."""
 
-    def test_add_positive_numbers(self):
+    def test_add_positive_numbers(self, calc):
         """Test adding two positive numbers."""
         # Arrange
-        calc = Calculator()
         a = 5
         b = 3
         expected = 8
@@ -23,10 +30,9 @@ class TestAddition:
         # Assert
         assert result == expected
 
-    def test_add_negative_numbers(self):
+    def test_add_negative_numbers(self, calc):
         """Test adding two negative numbers."""
         # Arrange
-        calc = Calculator()
         a = -5
         b = -3
         expected = -8
@@ -37,10 +43,9 @@ class TestAddition:
         # Assert
         assert result == expected
 
-    def test_add_positive_and_negative(self):
+    def test_add_positive_and_negative(self, calc):
         """Test adding positive and negative numbers."""
         # Arrange
-        calc = Calculator()
         a = 5
         b = -3
         expected = 2
@@ -51,10 +56,9 @@ class TestAddition:
         # Assert
         assert result == expected
 
-    def test_add_negative_and_positive(self):
+    def test_add_negative_and_positive(self, calc):
         """Test adding negative and positive numbers."""
         # Arrange
-        calc = Calculator()
         a = -5
         b = 3
         expected = -2
@@ -65,10 +69,9 @@ class TestAddition:
         # Assert
         assert result == expected
 
-    def test_add_positive_with_zero(self):
+    def test_add_positive_with_zero(self, calc):
         """Test adding positive number with zero."""
         # Arrange
-        calc = Calculator()
         a = 5
         b = 0
         expected = 5
@@ -79,10 +82,9 @@ class TestAddition:
         # Assert
         assert result == expected
 
-    def test_add_zero_with_positive(self):
+    def test_add_zero_with_positive(self, calc):
         """Test adding zero with positive number."""
         # Arrange
-        calc = Calculator()
         a = 0
         b = 5
         expected = 5
@@ -93,10 +95,9 @@ class TestAddition:
         # Assert
         assert result == expected
 
-    def test_add_floats(self):
+    def test_add_floats(self, calc):
         """Test adding floating point numbers."""
         # Arrange
-        calc = Calculator()
         a = 2.5
         b = 3.7
         expected = 6.2
@@ -111,25 +112,104 @@ class TestAddition:
 class TestSubtraction:
     """Tests for the subtract method."""
 
-    def test_subtract_positive_numbers(self):
+    def test_subtract_positive_numbers(self, calc):
         """Test subtracting positive numbers."""
-        # TODO: Implement
+        # Arrange
+        a = 4
+        b = 1
+        expected = 3
+
+        # Act
+        result = calc.subtract(a, b)
+
+        # Assert
+        assert result == expected
 
 
 class TestMultiplication:
     """Tests for the multiply method."""
 
-    def test_multiply_positive_numbers(self):
+    def test_multiply_positive_numbers(self, calc):
         """Test multiplying positive numbers."""
-        # TODO: Implement
+        # Arrange
+        a = 4
+        b = 2
+        expected = 8
+
+        # Act
+        result = calc.multiply(a, b)
+
+        # Assert
+        assert result == expected  
 
 
 class TestDivision:
     """Tests for the divide method."""
 
-    def test_divide_positive_numbers(self):
+    def test_divide_positive_numbers(self, calc):
         """Test dividing positive numbers."""
-        # TODO: Implement
+        # Arrange
+        a = 8
+        b = 2
+        expected = 4
+
+        # Act
+        result = calc.divide(a, b)
+
+        # Assert
+        assert result == expected  
 
 
+class TestInvalid:
+    """Tests for invalid inputs."""
 
+    def test_add_invalid_input_MaxValue_a(self, calc):
+        """Test adding with invalid input."""
+        # Arrange
+        a = 1000001
+        b = 3
+
+        # Act & Assert
+        with pytest.raises(InvalidInputException) as exc_info:
+            calc.add(a, b)
+
+        assert f"Input {a} is out of valid range: {MIN_VALUE} to {MAX_VALUE}." in str(exc_info.value)
+
+    def test_add_invalid_input_MinValue_a(self, calc):
+        """Test adding with invalid input."""
+        # Arrange
+        a = 3
+        b = -1000001
+
+        # Act & Assert:
+        with pytest.raises(InvalidInputException) as exc_info:
+            calc.add(a, b)
+
+        assert f"Input {b} is out of valid range: {MIN_VALUE} to {MAX_VALUE}." in str(exc_info.value)
+    
+    def test_add_min_boundary_b(self, calc):
+        assert calc.add(1, -1000000) == -999999
+
+    def test_add_max_boundary_b(self, calc):
+        assert calc.add(1, 1000000) == 1000001
+
+
+class TestDivisionByZero:
+    """Tests for division by zero."""
+
+    def test_divide_by_zero(self, calc):
+        """Test dividing by zero."""
+        # Arrange
+        a = 5
+        b = 0
+
+        # Act & Assert
+        with pytest.raises(ValueError) as exc_info:
+            calc.divide(a, b)
+
+        assert "Cannot divide by zero" == str(exc_info.value)
+
+# wsl
+# cd /mnt/d/programs/works/SystemDevelopment5th
+# ~/.local/bin/mutmut run
+# ~/.local/bin/mutmut browse
