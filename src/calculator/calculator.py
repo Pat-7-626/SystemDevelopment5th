@@ -5,6 +5,7 @@ A simple calculator module with basic arithmetic operations.
 MAX_VALUE = 1000000
 MIN_VALUE = -1000000
 
+
 class InvalidInputException(Exception):
     """Exception raised when input values are outside the valid range."""
 
@@ -13,11 +14,12 @@ class Calculator:
     """Calculator class providing basic arithmetic operations."""
 
     def _validate_input(self, *values):
-
         """Validate that inputs are within the allowed range."""
         for v in values:
             if not (MIN_VALUE <= v <= MAX_VALUE):
-                raise InvalidInputException(f"Input {v} is out of valid range: {MIN_VALUE} to {MAX_VALUE}.")
+                raise InvalidInputException(
+                    f"Input {v} is out of valid range: {MIN_VALUE} to {MAX_VALUE}."
+                )
 
     def add(self, a, b):
         """Add two numbers.
@@ -85,8 +87,3 @@ class Calculator:
         if b == 0:
             raise ValueError("Cannot divide by zero")
         return a / b
-
-
-
-
-

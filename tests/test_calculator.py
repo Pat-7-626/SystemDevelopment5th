@@ -8,6 +8,7 @@ from calculator.calculator import Calculator, InvalidInputException
 MAX_VALUE = 1000000
 MIN_VALUE = -1000000
 
+
 @pytest.fixture
 def calc():
     """Fixture to create a Calculator instance."""
@@ -140,7 +141,7 @@ class TestMultiplication:
         result = calc.multiply(a, b)
 
         # Assert
-        assert result == expected  
+        assert result == expected
 
 
 class TestDivision:
@@ -157,7 +158,7 @@ class TestDivision:
         result = calc.divide(a, b)
 
         # Assert
-        assert result == expected  
+        assert result == expected
 
 
 class TestInvalid:
@@ -173,7 +174,9 @@ class TestInvalid:
         with pytest.raises(InvalidInputException) as exc_info:
             calc.add(a, b)
 
-        assert f"Input {a} is out of valid range: {MIN_VALUE} to {MAX_VALUE}." in str(exc_info.value)
+        assert f"Input {a} is out of valid range: {MIN_VALUE} to {MAX_VALUE}." in str(
+            exc_info.value
+        )
 
     def test_add_invalid_input_MinValue_a(self, calc):
         """Test adding with invalid input."""
@@ -185,8 +188,10 @@ class TestInvalid:
         with pytest.raises(InvalidInputException) as exc_info:
             calc.add(a, b)
 
-        assert f"Input {b} is out of valid range: {MIN_VALUE} to {MAX_VALUE}." in str(exc_info.value)
-    
+        assert f"Input {b} is out of valid range: {MIN_VALUE} to {MAX_VALUE}." in str(
+            exc_info.value
+        )
+
     def test_add_min_boundary_b(self, calc):
         assert calc.add(1, -1000000) == -999999
 
@@ -208,6 +213,7 @@ class TestDivisionByZero:
             calc.divide(a, b)
 
         assert "Cannot divide by zero" == str(exc_info.value)
+
 
 # wsl
 # cd /mnt/d/programs/works/SystemDevelopment5th
